@@ -12,30 +12,42 @@ void Controle_Direction(uint8_t milieu_ligne) {
 
    uint8_t centre_camera = 64; //centre camera
    int16_t derivee;
-   objectif_vitesse = 0.5;
+   
+   int16_t erreur;
+   float commande = pos_milieu_servo;
+   uint16_t commande_bornee;
+   float terme_derivee;
+   float terme_integral;
+   static float derivee_lisse = 0;
 
    /* coefs du PD */
-   int16_t Kp = 1; // coef proportionnel
-   int16_t Kd = 10; // coef dérivé
-
-   /* Calcul de l'erreur en fontion du milieu de la ligne */
-   controle_derniere_erreur = erreur;
-   int16_t erreur = centre_camera - milieu_ligne;
-
+   int16_t Kp = 5; // coef proportionnel
+   int16_t Kd = 70; // coef dérivé
+   
+   /* Calcul de l'erreur en fontion du milieu de la ligne */	
+	erreur = centre_camera - milieu_ligne;
+	
    /* calcul de la dérivée de l'erreur */
    derivee = erreur - controle_derniere_erreur;
+	
+	//lissage de la derivee;
+ 	derivee_lisse = 0.95*derivee_lisse + 0.05*derivee;
+ 	
+   controle_derniere_erreur = erreur;
+
 
    /********************************************************/
    /* application du PD pour l'orientation des roues */
-   float commande = pos_milieu_servo;
-
-   float terme_derivee = Kd * derivee;
+	terme_integral = Kp * erreur;
+	terme_derivee = Kd * derivee_lisse;
    /* limitation du terme dérivée */
-   if (terme_derivee < -1000){
-      terme_derivee = -1000;
-   } else if (terme_derivee > 1000) {
-      terme_derivee = 1000;
+   if (terme_derivee < -1300){
+      terme_derivee = -1300;
+   } else if (terme_derivee > 1300) {
+      terme_derivee = 1300;
    }
+   
+   commande += terme_integral;
    commande += terme_derivee;
 
    /********************************************************/
@@ -50,8 +62,9 @@ void Controle_Direction(uint8_t milieu_ligne) {
    }
 
    /* modif de la vitesse en fonction de la derivée */
-   objectif_vitesse = 0.7 - 0.05*(abs(derivee));
-
+   //objectif_vitesse = 0.2 - 0.05*(abs(derivee));
+	objectif_vitesse = 0.6;
+	
    /* application de la commande */
    EMIOS_0.CH[4].CBDR.R = commande_bornee;
 }
