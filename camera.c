@@ -43,11 +43,11 @@ void ADC_Interupt(void)
 */
 
 
-void Acquisition_Camera(uint8_t balance_des_blancs)
+void Acquisition_Camera(void)
 {
     uint8_t i;
-    uint32_t adcdata;
-    static uint8_t camera_valeurs_blanc[128];
+    uint32_t adcdata1;
+    uint32_t adcdata2;
     /* Code original */
     //SIU.PGPDO[0].R &= ~0x00000014;          /* All port line low */
     //SIU.PGPDO[0].R |= 0x00000010;           /* Sensor read start High */
@@ -60,29 +60,27 @@ void Acquisition_Camera(uint8_t balance_des_blancs)
     //delay(250);
     
     /* En passant directement sur la carte mère */
-    SIU.PGPDO[1].R &= ~0x0000000C;          /* All port line low */
-    SIU.PGPDO[1].R |= 0x00000008;           /* Sensor read start High */
+    SIU.PGPDO[1].R &= ~0x0000280C;          /* All port line low */
+    SIU.PGPDO[1].R |= 0x00002008;           /* Sensor read start High */
     delay(250);
-    SIU.PGPDO[1].R |= 0x00000004;           /* Sensor Clock High */
+    SIU.PGPDO[1].R |= 0x00000804;           /* Sensor Clock High */
     delay(250);
-    SIU.PGPDO[1].R &= ~0x00000008;          /* Sensor read start Low */ 
+    SIU.PGPDO[1].R &= ~0x00002008;          /* Sensor read start Low */ 
     delay(250);
-    SIU.PGPDO[1].R &= ~0x00000004;          /* Sensor Clock Low */
+    SIU.PGPDO[1].R &= ~0x00000804;          /* Sensor Clock Low */
     delay(250);
     for (i=0;i<128;i++)
     {
         delay(250);
-        SIU.PGPDO[1].R |= 0x00000004;   /* Sensor Clock High */
+        SIU.PGPDO[1].R |= 0x00000804;   /* Sensor Clock High */
         ADC.MCR.B.NSTART=1;             /* Trigger normal conversions for ADC0 */
         while (ADC.MCR.B.NSTART == 1) {};
         //adcdata = ADC.CDR[0].B.CDATA; // En passant par la carte de puissance...
-        adcdata = ADC.CDR[14].B.CDATA; // Mettre la sortie de la camera sur PD[10] 
+        adcdata1 = ADC.CDR[14].B.CDATA; // Mettre la sortie de la camera sur PD[10]
+        adcdata2 = ADC.CDR[4].B.CDATA; // Mettre la sortie de la camera sur PD[0]
+         
         delay(250);
-        SIU.PGPDO[1].R &= ~0x00000004;  /* Sensor Clock Low */
+        SIU.PGPDO[1].R &= ~0x00000804;  /* Sensor Clock Low */
         camera_valeurs_brutes[i] = (uint16_t)adcdata;
-        if(balance_des_blancs)
-            camera_valeurs_blanc[i] = (adcdata >> 2);
-        else
-            camera_valeurs[i] = ((int16_t)camera_valeurs_blanc[i] - (int16_t)(adcdata >> 2)) ; // je divise par deux pour éviter un overflow
     }
 }

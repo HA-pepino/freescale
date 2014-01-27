@@ -115,7 +115,7 @@ void initPads (void) {
 	SIU.PCR[22].R = 0x2000;          	/* MPC56xxB: Initialize PB[6] as ANP2 */
 	SIU.PCR[42].R = 0x0200;				/* Initialise la pin de contrÙle du freinage en sortie -> PC[10]*/
 	SIU.PCR[57].R = 0x2000;          	/* MPC56xxB: Initialize PD[9] as ANP13 -> potentiomËtre */
-	/*Camera:*/
+	/*Camera1:*/
 	SIU.PCR[58].R = 0x2000;          	/* MPC56xxB: Initialize PD[10] as ANP14 -> Camera AO*/
 	SIU.PCR[60].R = 0x0200;             /* PD[12] -> Sortie: Signal SI */
 	SIU.PCR[61].R = 0x0200;             /* PD[13] -> Sortie: Signal CLK */
@@ -124,7 +124,18 @@ void initPads (void) {
 	/* Alimentation Camera */ 
 	SIU.GPDO[62].R = 1; /* VCC */
 	SIU.GPDO[63].R = 0; /* Masse */
-	/* Fin Camera */
+	/* Fin Camera1 */
+	
+	/*Camera2:*/
+	SIU.PCR[48].R = 0x2000;          	/* MPC56xxB: Initialize PD[0] as ANP14 -> Camera AO*/
+	SIU.PCR[50].R = 0x0200;             /* PD[2] -> Sortie: Signal SI */
+	SIU.PCR[52].R = 0x0200;             /* PD[4] -> Sortie: Signal CLK */
+	SIU.PCR[54].R = 0x0200;             /* PD[6] -> Sortie: VCC */
+	SIU.PCR[56].R = 0x0200;             /* PD[8] -> Sortie: Masse */
+	/* Alimentation Camera */ 
+	SIU.GPDO[54].R = 1; /* VCC */
+	SIU.GPDO[56].R = 0; /* Masse */
+	/* Fin Camera2 */
 	
 	SIU.PCR[64].R = 0x0100;				/* Initialise PE[0] (S1) en entr√©e */
 	SIU.PCR[65].R = 0x0100;				/* Initialise PE[1] (S2) en entr√©e */
