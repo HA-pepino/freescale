@@ -63,7 +63,7 @@ void Controle_Direction(uint8_t milieu_ligne) {
 
    /* modif de la vitesse en fonction de la derivée */
    //objectif_vitesse = 0.2 - 0.05*(abs(derivee));
-	objectif_vitesse = 0.6;
+	//objectif_vitesse = 0.6;
 	
    /* application de la commande */
    EMIOS_0.CH[4].CBDR.R = commande_bornee;

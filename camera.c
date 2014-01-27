@@ -46,8 +46,7 @@ void ADC_Interupt(void)
 void Acquisition_Camera(void)
 {
     uint8_t i;
-    uint32_t adcdata1;
-    uint32_t adcdata2;
+
     /* Code original */
     //SIU.PGPDO[0].R &= ~0x00000014;          /* All port line low */
     //SIU.PGPDO[0].R |= 0x00000010;           /* Sensor read start High */
@@ -76,12 +75,11 @@ void Acquisition_Camera(void)
         ADC.MCR.B.NSTART=1;             /* Trigger normal conversions for ADC0 */
         while (ADC.MCR.B.NSTART == 1) {};
         //adcdata = ADC.CDR[0].B.CDATA; // En passant par la carte de puissance...
-        adcdata1 = ADC.CDR[14].B.CDATA; // Mettre la sortie de la camera sur PD[10]
-        adcdata2 = ADC.CDR[4].B.CDATA; // Mettre la sortie de la camera sur PD[0]
+        camera_valeurs_brutes1[i] = (uint16_t)ADC.CDR[14].B.CDATA; // Mettre la sortie de la camera sur PD[10]
+        camera_valeurs_brutes2[i] = (uint16_t)ADC.CDR[4].B.CDATA; // Mettre la sortie de la camera sur PD[0]
          
         delay(250);
         SIU.PGPDO[1].R &= ~0x00000804;  /* Sensor Clock Low */
-        camera_valeurs_brutes1[i] = (uint16_t)adcdata1;
-        camera_valeurs_brutes2[i] = (uint16_t)adcdata2;
+
     }
 }

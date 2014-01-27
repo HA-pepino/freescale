@@ -151,7 +151,7 @@ void initPads (void) {
 void initADC(void) {
 	//ADC.MCR.R = 0x20020000;         	/* Initialize ADC scan mode*/
 	ADC.MCR.R = 0x00000000;         	/* Initialize ADC one shot mode*/
-	ADC.NCMR[0].R = 0x00006817;      	/* Select ANP0:2 and 4 inputs for normal conversion */
+	ADC.NCMR[0].R = 0x00006017;      	/* Select ANP0:2 and 4 inputs for normal conversion */
 	ADC.CTR[0].R = 0x00008606;       	/* Conversion times for 32MHz ADClock */
 	ADC.CTR[0].B.INPSAMP=25;
 }
