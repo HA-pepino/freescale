@@ -81,6 +81,7 @@ void Acquisition_Camera(void)
          
         delay(250);
         SIU.PGPDO[1].R &= ~0x00000804;  /* Sensor Clock Low */
-        camera_valeurs_brutes[i] = (uint16_t)adcdata;
+        camera_valeurs_brutes1[i] = (uint16_t)adcdata1;
+        camera_valeurs_brutes2[i] = (uint16_t)adcdata2;
     }
 }

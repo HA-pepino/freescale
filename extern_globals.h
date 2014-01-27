@@ -22,4 +22,5 @@ extern uint8_t Capteurs_resultat;
 
 //pepino
 extern uint8_t i_camera_interupt;
-extern uint16_t camera_valeurs_brutes[128];
+extern uint16_t camera_valeurs_brutes1[128];
+extern uint16_t camera_valeurs_brutes2[128];

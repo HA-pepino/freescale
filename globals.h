@@ -15,4 +15,5 @@ uint8_t	Capteurs_resultat;
 uint16_t compteur_acquisitions_invalides;
 //pepino
 uint8_t i_camera_interupt;
-uint16_t camera_valeurs_brutes[128];
+uint16_t camera_valeurs_brutes1[128];
+uint16_t camera_valeurs_brutes2[128];

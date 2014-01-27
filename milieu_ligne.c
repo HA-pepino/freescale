@@ -13,7 +13,7 @@ uint8_t milieu_ligne_pepino(void)
 	uint8_t new_min_loc, min_loc_ok = 0; 
 	uint8_t erreur_min = 0, tour_de_boucle = 0;
 	float loc, prec, pprec, next, nnext;
-	moyennage_cam(camera_valeurs_brutes, camera_moyenne);
+	moyennage_cam(camera_valeurs_brutes2, camera_moyenne);
 	new_min_loc = centre;// reprise de l'ancienne valeur
 
 	
